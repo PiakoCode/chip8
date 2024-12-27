@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <vector>
 
 class Instruction {
 public:
@@ -45,60 +46,77 @@ public:
      * 其中 0x000 - 0x1FF 为系统保留区域
      * 0x200 - 0xFFF 为程序区域
      */
-    uint8_t memory[4096];
+    uint8_t memory[4096]={0};
 
     // 16 个 8 位 通用寄存器
-    uint8_t V[16];
+    uint8_t V[16]={0};
 
     // 1 个 16 位 地址寄存器
-    uint16_t I;
+    uint16_t I{0};
 
     // pc
     uint16_t pc{0x200};
 
     // 栈
-    uint16_t stack[16];
+    uint16_t stack[16]={0};
 
     // 栈指针
     uint16_t sp{0};
 
     // 屏幕
-    uint8_t screen[64][32]={0};
+    uint8_t screen[64][32] = {0};
 
     // 键盘
-    uint8_t keyboard[16];
+    uint8_t keyboard[16]={0};
 
     // 定时器
     uint8_t delay_timer;
     uint8_t sound_timer;
 
+    std::vector<uint16_t> ops;
 
-    void set_screen(int x,int y, uint8_t value) {
+    void set_screen(int x, int y, uint8_t value) {
         if (x >= 64 || y >= 32) {
             return;
         }
         screen[x][y] = value;
     }
 
+    void run() {
+        for (pc = 0; pc < ops.size();pc++) {
+            printf("0x%04X\n", ops[pc]);
+            exectue(ops[pc]);
+            
+        }
+    }
+
     void exectue(Instruction ins) {
-        pc += 1;
+
         switch (ins.opcode) {
         // 执行
         case 0x0:
-            if (ins.ins == 0x00E0) {
-                // 清屏
+            if (ins.ins == 0x00E0) { // 清屏
+                for (int i = 0; i < 64; i++) {
+                    for (int j = 0; j < 32; j++) {
+                        set_screen(i, j, 0);
+                    }
+                }
+
             } else if (ins.ins == 0x00EE) {
+                // TODO:
                 // 返回
             } else {
+                // TODO:
                 // 在地址 NNN 处执行机器语言子程序
                 pc = ins.NNN;
             }
             break;
         case 0x1: {
             // 跳转到地址 NNN
-            pc = ins.NNN;
+            pc = (ins.NNN - 0x200)/2 - 1;
         } break;
         case 0x2: {
+            // TODO:
             // 调用子程序 NNN
         } break;
         case 0x3: {
@@ -204,6 +222,8 @@ public:
             // ，否则设置为 00
             uint8_t x = V[ins.X];
             uint8_t y = V[ins.Y];
+            uint8_t addr = I;
+            uint8_t n = ins.N;
             // TODO:
         } break;
         case 0xE: {
@@ -242,7 +262,7 @@ public:
             } else {
                 printf("Unknown opcode: 0x%X\n", ins.ins);
             }
-        }
+        } break;
         default:
             printf("Unknown opcode: 0x%X\n", ins.ins);
             break;
