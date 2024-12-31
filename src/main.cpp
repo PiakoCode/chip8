@@ -5,6 +5,7 @@
 #include <cstdio>
 #include "chip8_display.h"
 #include "file_reader.h"
+#include "key_input.h"
 #include <SDL2/SDL.h>
 #include <thread>
 #include <vector>
@@ -22,7 +23,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < buffer.size(); i += 2) {
 
         uint16_t ins = (buffer[i] << 8) + buffer[i + 1];
-        
+
         ops.push_back(ins);
     }
 
@@ -40,9 +41,16 @@ int main(int argc, char *argv[]) {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 quit = 1;
+            } else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
+                auto s = handle_key_input(&e);
+                // set keyboard
+                if (s != "") {
+                    vm.keyboard[vm.key_map[s]] = 1;
+                }
             }
         }
         screen_dispaly(vm, renderer);
+
         // vm.set_screen(0, 0, 1);
         // vm.set_screen(0, 31, 1);
         // vm.set_screen(63, 0, 1);
