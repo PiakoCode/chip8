@@ -1,8 +1,8 @@
-include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories("${PROJECT_SOURCE_DIR}/src/include")
 
 
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/src/*.cc")
-file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/include/*.h" "${PROJECT_SOURCE_DIR}/include/*.hpp")
+file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/src/include/*.h" "${PROJECT_SOURCE_DIR}/src/include/*.hpp")
 # 可执行文件
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
