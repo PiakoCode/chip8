@@ -24,19 +24,19 @@ uint16_t Instruction::get_OP() const {
     return this->OP_;
 }
 
-uint16_t Instruction::get_X() const {
+uint8_t Instruction::get_X() const {
     return this->X_;
 }
 
-uint16_t Instruction::get_Y() const {
+uint8_t Instruction::get_Y() const {
     return this->Y_;
 }
 
-uint16_t Instruction::get_N() const {
+uint8_t Instruction::get_N() const {
     return this->N_;
 }
 
-uint16_t Instruction::get_NN() const {
+uint8_t Instruction::get_NN() const {
     return this->NN_;
 }
 

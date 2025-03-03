@@ -1,6 +1,7 @@
-#include "file_reader.h"
 #include <cstdint>
+#include "utils.h"
 #include <fstream>
+#include <random>
 #include <vector>
 
 std::vector<uint8_t> read_binary_file(const std::string &file_path) {
@@ -15,4 +16,19 @@ std::vector<uint8_t> read_binary_file(const std::string &file_path) {
     file.read(reinterpret_cast<char *>(buffer.data()), file_size);
     file.close();
     return buffer;
+}
+
+
+uint8_t rand_uint8_t() {
+        // 使用随机设备生成种子，以保证每次运行时生成不同的随机数
+        std::random_device rd;
+    
+        // 使用Mersenne Twister引擎
+        std::mt19937 gen(rd());
+        
+        std::uniform_int_distribution<uint8_t> dist(0, std::numeric_limits<uint8_t>::max());
+        
+        // 生成随机数
+        uint8_t random_number = dist(gen);
+        return random_number;
 }

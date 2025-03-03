@@ -21,20 +21,20 @@ public:
     void set_opcode(uint16_t opcode);
     uint16_t get_OP() const;
     
-    uint16_t get_X() const;
-    uint16_t get_Y() const;
-    uint16_t get_N() const;
-    uint16_t get_NN() const;
+    uint8_t get_X() const;
+    uint8_t get_Y() const;
+    uint8_t get_N() const;
+    uint8_t get_NN() const;
     uint16_t get_NNN() const;
 
 private:
     uint16_t opcode_;
 
     uint16_t OP_;
-    uint16_t X_;
-    uint16_t Y_;
-    uint16_t N_;
-    uint16_t NN_;
+    uint8_t X_;
+    uint8_t Y_;
+    uint8_t N_;
+    uint8_t NN_;
     uint16_t NNN_;
 
 };

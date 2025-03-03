@@ -76,6 +76,9 @@ public:
      */
     Display display_;
 private:
+
+    void clean_key_state();
+
     /**
      * @brief
      * 程序从 0x200 开始加载
@@ -88,8 +91,10 @@ private:
     uint16_t pc_{0x200};           // 12 位程序计数器 pc
     uint8_t  sp_{0};           // 栈指针
     uint8_t  v_[16]{0};        // 16 个 8 位通用寄存器 v0 - vF
-    uint16_t stack_[16]{0};    // 16 位地址栈
+    uint8_t  key_[16]{0};      // 16 个按键
+    uint16_t stack_[16]{0};    // 16 位地址栈 0 - F
     uint8_t  delay_timer_{0};  // 延时计数器
+    uint8_t  sound_timer_{0};  // 声音计数器
     Instruction instruction_{0};  // 当前指令
 
 };
