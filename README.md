@@ -1,5 +1,5 @@
 
-![IBM LOGO](assert/IBM_LOGO.png)
+![IBM LOGO](asset/IBM_LOGO.png)
 
 ![test_opcode](asset/test_opcode.png)
 
