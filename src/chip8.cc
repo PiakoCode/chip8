@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <thread>
 #include <unistd.h>
 
 Chip8::Chip8() {
@@ -351,6 +352,31 @@ void Chip8::clean_key_state() {
 
 void Chip8::run() {
 
+    std::thread decode_thread = std::thread([&]{
+        while (true) {
+
+
+        /* 执行指令*/
+        instruction_ = Instruction(fetch());
+        this->pc_ += 2; // pc increase
+        decode_execute();
+        /********/
+
+        // display_.draw();
+        // display_.render_present();
+
+        // 计数器
+        this->sound_timer_--;
+        this->delay_timer_--;
+        
+        // 线程休眠
+        std::this_thread::sleep_for(std::chrono::milliseconds(5)); 
+
+        }
+    });
+    draw_thread.detach();
+
+
     // 主循环
     SDL_bool quit = SDL_FALSE;
     while (!quit) {
@@ -366,23 +392,10 @@ void Chip8::run() {
             this->key_[key_code] = 1;
         }
 
-        /* 执行指令*/
-        instruction_ = Instruction(fetch());
-        this->pc_ += 2; // pc increase
-        decode_execute();
-        /********/
-
-        // 根据pixles数组绘制屏幕
         display_.draw();
-
         display_.render_present();
-
-
-
-        // 计数器
-        this->sound_timer_--;
-        this->delay_timer_--;
+        // SDL_Delay(1);
         
-        // SDL_Delay(16);
+
     }
 }
